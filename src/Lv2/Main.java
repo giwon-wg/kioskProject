@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public void main() {
         //List 선언 및 초기화
         List<MenuItem> menuItem = new ArrayList<>();
 
@@ -29,7 +29,7 @@ public class Main {
             for(int i = 0; i < menuItem.size(); i++){
                 System.out.println(TextColor.R + (i + 1)+ TextColor.E + "." + menuItem.get(i));
             }
-            System.out.println(TextColor.R + "0. " + TextColor.E + "종료");
+            System.out.println(TextColor.R + "0. " + TextColor.E + "뒤로가기");
             System.out.println("====================");
             System.out.print("\n번호를 선택해 주세요\n: ");
 
@@ -40,8 +40,8 @@ public class Main {
 
                 if(numinput == 0) {
                     //프로그램 종료
-                    System.out.println("**프로그램을 종료합니다.");
-                    break;
+                    System.out.println("**메인으로 이동합니다.");
+                    return;
                 }else if(numinput >= 1 && numinput <= menuItem.size()){
                     //선택한 메뉴 설명
                     System.out.println("\n선택한 번호는 " + numinput + "번 입니다.");

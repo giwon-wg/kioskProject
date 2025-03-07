@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
+    public void main() {
 
         //List 선언 및 초기화
         List<Lv3.MenuItem> menuItem = new ArrayList<>();

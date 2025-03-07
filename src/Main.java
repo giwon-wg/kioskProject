@@ -6,34 +6,38 @@ public class Main {
         String lv;
         while(true) {
             System.out.println("===========================");
-            System.out.print("실행할 Lv을 입력하세요(1 - 5)\n: ");
+            System.out.println("실행할 Lv을 입력하세요.");
+            System.out.println("Lv1  = 1번");
+            System.out.println("Lv2  = 2번");
+            System.out.println("Lv3  = 3번");
+            System.out.println("Lv4  = 4번");
+            System.out.println("Lv5  = 5번");
+            System.out.print("종료  = 0번\n: ");
             lv = sc.next();
-            System.out.println("===========================");
-            System.out.println();
+            System.out.println("===========================\n");
             switch (lv) {
                 case "1":
                     System.out.println("Lv.1을 실행합니다.\n");
-                    Lv1.Main.main(args);
-                    sc.close();
-                    return;
+                    new Lv1.Main().main();
+                    break;
                 case "2":
                     System.out.println("Lv.2을 실행합니다.\n");
-                    Lv2.Main.main(args);
-                    sc.close();
-                    return;
+                    new Lv2.Main().main();
+                    break;
                 case "3":
                     System.out.println("Lv.3을 실행합니다.\n");
-                    Lv3.Main.main(args);
-                    sc.close();
-                    return;
+                    new Lv3.Main().main();
+                    break;
                 case "4":
                     System.out.println("Lv.4을 실행합니다.\n");
-                    Lv4.Main.main(args);
-                    sc.close();
-                    return;
+                    new Lv4.Main().main();
+                    break;
                 case "5":
                     System.out.println("Lv.5을 실행합니다.\n");
-                    Lv5.Main.main(args);
+                    new Lv5.Main().main();
+                    break;
+                case "0":
+                    System.out.println("**프로그램을 종료합니다.");
                     sc.close();
                     return;
                 default:
