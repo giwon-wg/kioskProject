@@ -27,5 +27,4 @@ public class MenuItem {
         //return TextColor.Y + name + TextColor.E + price + description;
         return TextColor.Y + name + TextColor.E + TextColor.O + "| " + TextColor.E + TextColor.Y + "W " + TextColor.E + TextColor.R + price + TextColor.E + TextColor.O + " | " + TextColor.E + description;
     }
-
 }
