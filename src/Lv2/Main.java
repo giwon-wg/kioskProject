@@ -49,6 +49,28 @@ public class Main {
                     System.out.println("메뉴 설명");
                     menuItem.get(numinput-1).choose();
                     System.out.println("====================");
+
+                    System.out.print("\n뒤로 가기를 원하신다면 0번, 구매를 원하신다면 1번, 장바구니에 넣기는 2번을 눌러주세요\n: ");
+                    if(sc.hasNextInt()){
+                        int reinput = sc.nextInt();
+                        sc.nextLine();
+                        if(reinput < 3) {
+                            switch (reinput) {
+                                case 0:
+                                    System.out.println("\n**메뉴판으로 이동합니다.\n");
+                                    break;
+                                case 1:
+                                    System.out.println("\n구매 기능은 구현중입니다.\n");
+                                    break;
+                                case 2:
+                                    System.out.println("\n장바구니 기능은 구현중입니다.\n");
+                                    break;
+                            }
+                        }else {
+                            //정상적인 번호가 아닐시 예외처리
+                            System.out.println("**0 - 2 중 입력해주세요");
+                        }
+                    }
                 }else {
                     //정상적인 번호가 아닐시 예외처리
                     System.out.println("**4가지 메뉴 중 하나를 선택해주세요.");
