@@ -19,23 +19,23 @@ public class Main {
             switch (lv) {
                 case "1":
                     System.out.println("Lv.1을 실행합니다.\n");
-                    new Lv1.Main().main();
+                    Lv1.Main.main(new String[]{});
                     break;
                 case "2":
                     System.out.println("Lv.2을 실행합니다.\n");
-                    new Lv2.Main().main();
+                    Lv2.Main.main(new String[]{});
                     break;
                 case "3":
                     System.out.println("Lv.3을 실행합니다.\n");
-                    new Lv3.Main().main();
+                    Lv3.Main.main(new String[]{});
                     break;
                 case "4":
                     System.out.println("Lv.4을 실행합니다.\n");
-                    new Lv4.Main().main();
+                    Lv4.Main.main(new String[]{});
                     break;
                 case "5":
                     System.out.println("Lv.5을 실행합니다.\n");
-                    new Lv5.Main().main();
+                    Lv5.Main.main(new String[]{});
                     break;
                 case "0":
                     System.out.println("**프로그램을 종료합니다.");

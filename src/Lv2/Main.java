@@ -5,8 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-
-    public void main() {
+    public static void main(String[] args) {
         //List 선언 및 초기화
         List<MenuItem> menuItem = new ArrayList<>();
 

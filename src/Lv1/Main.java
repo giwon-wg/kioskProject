@@ -3,7 +3,7 @@ import utils.TextColor;
 import java.util.Scanner;
 
 public class Main {
-    public void main() {
+    public static void main(String[] args) {
         //Scanner 활성화
         Scanner sc = new Scanner(System.in);
 
