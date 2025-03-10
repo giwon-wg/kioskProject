@@ -64,7 +64,10 @@ public class Kiosk {
 
         List<MenuItem> items = menu.getMenuItems();
         for (int i = 0; i < items.size(); i++){
-            System.out.println((i+1) + "." + items.get(i));
+//            System.out.println((i+1) + "." + items.get(i));
+            //오버 라이딩 X
+            System.out.print((i+1) + ".");
+            items.get(i).getprint();
         }
         System.out.println(TextColor.R + "0. " + TextColor.E + "뒤로가기");
         System.out.println("====================");

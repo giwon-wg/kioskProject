@@ -15,17 +15,32 @@ public class MenuItem {
         this.description = description;
     }
 
+    //Getter
+    public String getName(){
+        return name;
+    }
+    public double getPrice(){
+        return price;
+    }
+    public String getDescription(){
+        return description;
+    }
+
     // 필드를 활용한 메서드
     public void choose(){
-        System.out.println("이름:" + name);
-        System.out.println("가격: " + price);
-        System.out.println("설명: " + description);
+        System.out.println("이름:" + getName());
+        System.out.println("가격: " + getPrice());
+        System.out.println("설명: " + getDescription());
     }
 
     //오버라이딩
-    public String toString(){
-        //return TextColor.Y + name + TextColor.E + price + description;
-        return TextColor.Y + name + TextColor.E + TextColor.O + "| " + TextColor.E + TextColor.Y + "W " + TextColor.E + TextColor.R + price + TextColor.E + TextColor.O + " | " + TextColor.E + description;
+//    public String toString(){
+//        //return TextColor.Y + name + TextColor.E + price + description;
+//        return TextColor.Y + name + TextColor.E + TextColor.O + "| " + TextColor.E + TextColor.Y + "W " + TextColor.E + TextColor.R + price + TextColor.E + TextColor.O + " | " + TextColor.E + description;
+//    }
+
+    public void getprint(){
+        System.out.println(TextColor.Y + getName() + TextColor.E + TextColor.O + "| " + TextColor.E + TextColor.Y + "W " + TextColor.E + TextColor.R + getPrice() + TextColor.E + TextColor.O + " | " + TextColor.E + getDescription());
     }
 
 }
