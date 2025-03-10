@@ -1,7 +1,13 @@
 package Lv5;
 
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Lv5는 구현 중입니다.!");
+        List<Lv5.Menu> menu = Menu.getMenu();
+
+        //객체 생성
+        Kiosk kiosks = new Kiosk(menu);
+        kiosks.start();
     }
 }
