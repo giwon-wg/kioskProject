@@ -4,7 +4,9 @@ import utils.TextColor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
 
 public class Kiosk {
     private List<Menu> menus;
@@ -128,8 +130,9 @@ public class Kiosk {
         if (cart.isEmpty()) {
             System.out.println("장바구니가 비어 있습니다.");
         } else {
+            AtomicInteger index = new AtomicInteger(1);
             cart.stream()
-                    .map(item -> (cart.indexOf(item) + 1) + "." + item.getName() + " | W " + item.getPrice())
+                    .map(item -> index.getAndIncrement() + "." + item.getName() + " | W " + item.getPrice())
                     .forEach(System.out::println);
 //            for (int i = 0; i < cart.size(); i++) {
 //                System.out.println((i + 1) + ". " + cart.get(i).getName() + " | W " + cart.get(i).getPrice());
@@ -231,9 +234,10 @@ public class Kiosk {
             if (index == 0) {
                 System.out.println("삭제를 취소합니다.");
             } else if (index >= 1 && index <= cart.size()) {
-                String removedItem= cart.get(index -1).getName();
+                MenuItem removedItem = cart.get(index - 1);
+                AtomicInteger count = new AtomicInteger(1);
                 cart = cart.stream()
-                        .filter(item -> !item.getName().equals(removedItem))
+                        .filter(item -> !(item.getName().equals(removedItem.getName()) && count.getAndDecrement() > 0))
                         .collect(Collectors.toList());
 //                MenuItem removedItem = cart.remove(index - 1);
                 System.out.println(removedItem + "이(가) 장바구니에서 삭제되었습니다.");
