@@ -4,6 +4,7 @@ import utils.TextColor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Kiosk {
     private List<Menu> menus;
@@ -31,6 +32,7 @@ public class Kiosk {
             System.out.println(TextColor.R + "0. " + TextColor.E + "뒤로가기");
             System.out.println("====================");
 
+//            장바구니 구현
             if(!cart.isEmpty()){
                 viewCart();
             }
@@ -40,14 +42,18 @@ public class Kiosk {
                 sc.nextLine(); // 입력 버퍼
                 if(numinput == 0) {
                     //프로그램 종료
-                    System.out.println("**메인으로 이동합니다.");
+                    System.out.println("Move to Main");
                     return;
                     } else if(numinput >= 1 && numinput <= menus.size()){
                     //올바른 숫자라면 display 호출
                     Menu select = menus.get(numinput - 1);
                     display(select, sc);
                 }else {
-                    cart(numinput, sc);
+                    try {
+                        cart(numinput, sc);
+                    } catch (IllegalStateException e) {
+                        System.out.println(e.getMessage());
+                    }
                 }
             }
         }
@@ -74,7 +80,7 @@ public class Kiosk {
 
             if (numinputs == 0) {
                 //프로그램 종료
-                System.out.println("**메인으로 이동합니다.");
+                System.out.println("Move to Main");
             } else if (numinputs >= 1 && numinputs <= items.size()) {
                 //선택한 메뉴 설명
                 MenuItem select = items.get(numinputs - 1);
@@ -82,9 +88,9 @@ public class Kiosk {
                 System.out.println("메뉴 설명");
                 select.choose();
                 System.out.println("====================");
-
-                System.out.println(TextColor.R + "0. " + TextColor.E + "Move to Main");
                 System.out.println(TextColor.R + "1. " + TextColor.E + "장바구니에 담기");
+                System.out.println(TextColor.R + "0. " + TextColor.E + "Move to Main");
+
                 if (sc.hasNextInt()) {
                     int reinput = sc.nextInt();
                     sc.nextLine(); // 입력 버퍼
@@ -122,13 +128,17 @@ public class Kiosk {
         if (cart.isEmpty()) {
             System.out.println("장바구니가 비어 있습니다.");
         } else {
-            for (int i = 0; i < cart.size(); i++) {
-                System.out.println((i + 1) + ". " + cart.get(i).getName() + " | W " + cart.get(i).getPrice());
-            }
+            cart.stream()
+                    .map(item -> (cart.indexOf(item) + 1) + "." + item.getName() + " | W " + item.getPrice())
+                    .forEach(System.out::println);
+//            for (int i = 0; i < cart.size(); i++) {
+//                System.out.println((i + 1) + ". " + cart.get(i).getName() + " | W " + cart.get(i).getPrice());
+//            }
             double totalprice = 0;
             for (MenuItem item : cart) {
                 totalprice += item.getPrice();
             }
+            totalprice *= 1000;
             System.out.println("\n총 가격: W " + totalprice);
         }
         System.out.println(TextColor.R + (menus.size() + 1) + ". " + TextColor.E + "상품 구매하기");
@@ -139,6 +149,7 @@ public class Kiosk {
 
     public void order(Scanner sc) {
         double totalprice = 0;
+        int totalpriceInt;
         if (cart.isEmpty()) {
             System.out.println("장바구니가 비어 있습니다.");
             return;
@@ -149,18 +160,60 @@ public class Kiosk {
             for (MenuItem item : cart) {
                 totalprice += item.getPrice();
             }
-            System.out.println("\n총 가격: W " + totalprice);
+            totalpriceInt = (int) (totalprice * 1000);
+            System.out.println("\n총 가격: W " + totalpriceInt);
         }
-        System.out.println("총 결제금액은 " + totalprice * 1000 + "원입니다.");
+        System.out.println("총 결제금액은 " + totalpriceInt + "원입니다.");
         System.out.println("결제 하시겠습니까? Yes : 1 / No : 2");
+        System.out.println("====================");
         String yorn = sc.nextLine();
         if (yorn.equals("1")) {
-            System.out.println("결제되었습니다. 이용해 주셔서 감사합니다.");
+            System.out.println("====================");
+            System.out.println("할인혜택을 선택해주세요");
+            System.out.println("1. 국가유공자 (10% 할인)");
+            System.out.println("2. 군인 (5% 할인)");
+            System.out.println("3. 학생 (3% 할인)");
+            System.out.println("4. 일반");
+            System.out.println("====================");
+            Discount discounttpye = Discount.NON;
+            String userType = "";
+            if(sc.hasNextInt()){
+                int index = sc.nextInt();
+                sc.nextLine();
+                switch (index){
+                    case 1:
+                        discounttpye = Discount.PDS;
+                        userType = "국가유공자";
+                        break;
+                    case 2:
+                        discounttpye = Discount.MILL;
+                        userType = "군인";
+                        break;
+                    case 3:
+                        discounttpye = Discount.STU;
+                        userType = "학생";
+                        break;
+                    case 4:
+                        discounttpye = Discount.NON;
+                        break;
+                    default:
+                        System.out.println("**잘못된 번호입니다.");
+                }
+            }else{
+                System.out.println("**숫자로 입력해주세요.");
+            }
+            int disconutPrice = (int) (totalpriceInt * discounttpye.getDiscounType());
+            int totalPriceDisconut = totalpriceInt - disconutPrice;
+            System.out.println("====================");
+            System.out.println(userType + " 할인금액은 " + disconutPrice + "원입니다.");
+            System.out.println("최종 결제금액은 " + totalPriceDisconut + "원입니다.");
+            System.out.println("이용해주셔서 감사합니다.");
+            System.out.println("====================");
             cart.clear();
         } else if (yorn.equals("2")) {
             System.out.println("주문 결제가 취소되었습니다.");
         } else {
-            System.out.println("잘못된 번호를 입력하였습니다.");
+            System.out.println("**잘못된 번호를 입력하였습니다.");
         }
     }
 
@@ -176,10 +229,14 @@ public class Kiosk {
             sc.nextLine(); // 입력 버퍼 정리
 
             if (index == 0) {
-                System.out.println("**삭제를 취소합니다.");
+                System.out.println("삭제를 취소합니다.");
             } else if (index >= 1 && index <= cart.size()) {
-                MenuItem removedItem = cart.remove(index - 1);
-                System.out.println("**" + removedItem.getName() + "이(가) 장바구니에서 삭제되었습니다.");
+                String removedItem= cart.get(index -1).getName();
+                cart = cart.stream()
+                        .filter(item -> !item.getName().equals(removedItem))
+                        .collect(Collectors.toList());
+//                MenuItem removedItem = cart.remove(index - 1);
+                System.out.println(removedItem + "이(가) 장바구니에서 삭제되었습니다.");
             } else {
                 System.out.println("**잘못된 번호입니다.");
             }
@@ -190,8 +247,13 @@ public class Kiosk {
     }
 
     public void cart(int numinput, Scanner sc){
+        if(cart.isEmpty() && (numinput == menus.size() + 1 || numinput == menus.size() + 2 || numinput == menus.size() + 3)){
+            throw new IllegalStateException("**올바른 숫자를 입력해주세요");
+        }
+
         if (numinput == menus.size() + 1) {//메뉴 추가 대비 하드코딩X
-            System.out.println("구매창으로 이동합니다.");
+            System.out.println("구매창으로 이동합니다.\n");
+            System.out.println("====================");
             order(sc);
         } else if (numinput == menus.size() + 2){
             cart.clear();
