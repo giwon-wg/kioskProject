@@ -22,6 +22,7 @@ public class Kiosk {
         Scanner sc = new Scanner(System.in);
         int num = -1;
 
+        System.out.print("관리자: admin");
         System.out.print("사용자 이름: ");
         String userId = sc.nextLine();
 
@@ -309,8 +310,8 @@ public class Kiosk {
         int[] userData = UserData.loadUserData(userId);
         int userCash = userData[0];
         int userPoint = userData[1];
-        int pointDiscountPrice;
-        int discountPoint;
+        int pointDiscountPrice = totalPrice;
+        int discountPoint = 0;
         System.out.println("적립 포인트를 사용하시겠습니까?\nYES: 1, NO: 2");
 
 
@@ -320,7 +321,7 @@ public class Kiosk {
             if (input == 1){
                 System.out.println("몇 포인트를 사용하시겠습니까?\n보유포인트: "+ userPoint);
                 discountPoint = sc.nextInt();
-                if(discountPoint < 1000){
+                if(discountPoint < 1000 && discountPoint > 0) {
                     System.out.println("1000점 이상만 사용 가능합니다.");
                     return;
                 }
@@ -333,30 +334,9 @@ public class Kiosk {
                     return;
                 }
                 pointDiscountPrice = totalPrice - discountPoint;
-                int point = (int) (pointDiscountPrice * 0.01);
-                userPoint -= discountPoint;
-                userPoint += point;
-                System.out.println("=======[결제창]=======");
-                System.out.println("      금액: " + totalPrice);
-                System.out.println("사용 포인트: " + discountPoint);
-                System.out.println("최종 결제액: " + pointDiscountPrice);
-                System.out.println("---------------------");
-                System.out.println("적립 포인트: " + point);
-                System.out.println("현재 포인트: " + userPoint);
-                System.out.println("=====================");
-                System.out.println("결제가 완료되었습니다.");
-            }else if(input == 2){
-                int point = (int) (totalPrice * 0.01);
-                userPoint += point;
-                System.out.println("=======[결제창]=======");
-                System.out.println("최종 결제액: " + totalPrice);
-                System.out.println("---------------------");
-                System.out.println("적립 포인트: " + point);
-                System.out.println("현재 포인트: " + userPoint);
-                System.out.println("=====================");
-                System.out.println("결제가 완료되었습니다.");
-
-            }else {
+            }else if(input == 2) {
+                System.out.println();
+            } else{
                 System.out.println("**입력값을 확인해 주세요");
                 return;
             }
@@ -365,9 +345,33 @@ public class Kiosk {
             sc.nextLine();
             return;
         }
-        if(payType == PayType.CASH && userCash < totalPrice){
-            System.out.println("잔액이 부족합니다.");
+        System.out.println("\n결제창을 불러오는 중입니다...");
+        try {
+            Thread.sleep(1000);  // 3초 동안 멈춤
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        if(userCash < pointDiscountPrice){
+            System.out.println("\n잔액이 부족합니다.");
+            return;
+        }
+
+        int pointEarned = (int) (pointDiscountPrice * 0.01);
+        userPoint -= discountPoint;
+        userCash -= pointDiscountPrice;
+        userPoint += pointEarned;
+
+        //결제 진행창
+        System.out.println("=======[결제창]=======");
+        System.out.println("      금액: " + totalPrice);
+        System.out.println("사용 포인트: " + discountPoint);
+        System.out.println("최종 결제액: " + pointDiscountPrice);
+        System.out.println("---------------------");
+        System.out.println("적립 포인트: " + pointEarned);
+        System.out.println("현재 포인트: " + userPoint);
+        System.out.println("=====================");
+        System.out.println("결제가 완료되었습니다.");
+
         UserData.saveUserData(userId, userCash, userPoint);
         cart.clear();
     }
